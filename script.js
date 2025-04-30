@@ -54,6 +54,8 @@ function startGame() {
     // session 3
     movePipes();
     // session 3
+    checkCollision();
+    //session 3
     frame++;
 
     // session 3
@@ -107,7 +109,6 @@ function movePipes() {
   pipes = pipes.filter((pipe) => pipe.offsetLeft + pipe.offsetWidth > 0);
 }
 
-
 // session 2
 // Start button (optional extra)
 start_btn.addEventListener("click", () => {
@@ -116,3 +117,69 @@ start_btn.addEventListener("click", () => {
     startGame();
   }
 });
+//Check collision
+function checkCollision() {
+  let birdRect = bird.getBoundingClientRect();
+  for (let pipe of pipes) {
+    let pipeRect = pipe.getBoundingClientRect();
+
+    if (
+      birdRect.left < pipeRect.left + pipeRect.width &&
+      birdRect.left + birdRect.width > pipeRect.left &&
+      birdRect.top < pipeRect.top + pipeRect.height &&
+      birdRect.top + birdRect.height > pipeRect.top
+    ) {
+      endGame();
+      return;
+    }
+  }
+  // Collision with top and bottom
+  if (
+    bird.offsetTop <= 0 ||
+    bird.offsetTop >= game_container.offsetHeight - bird.offsetHeight
+  ) {
+    endGame();
+  }
+  // Increase score when bird passes pipes (pipes are paired)
+  pipes.forEach((pipe, index) => {
+    if (index % 2 === 0) {
+      // Only check once for each top-bottom pair
+      if (
+        pipe.offsetLeft + pipe.offsetWidth < bird.offsetLeft &&
+        !pipe.passed
+      ) {
+        pipe.passed = true;
+        setScore(score + 1);
+      }
+    }
+  });
+}
+//session 3
+function setScore(newscore) {
+  score = newscore;
+  score_display.textContent = "score:" + score;
+}
+//session 3 
+//End game
+function endGame() {
+  clearInterval(gameInterval);
+  gameInterval = null;
+
+  alert("Game Over! Your score: " + score);
+  resetGame();
+
+}
+//session 3
+// Reset game
+function resetGame() {
+  bird.style.top = "50%";
+  bird_dy = 0;
+  for (let pipe of pipes) {
+    pipe.remove();
+  }
+  pipes =[];
+  setScore(0)
+  frame= 0;
+  game_state = "Start";
+  score_display.textContent ="";
+}
