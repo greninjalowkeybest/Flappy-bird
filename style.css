@@ -1,0 +1,49 @@
+/* Ensure the body and html take up the full height */
+html, body {
+   margin: 0;
+   padding: 0;
+   height: 100%;
+   background-color: coral; /* Optional background color */
+}
+
+
+
+/* Center the button in the middle of the screen */
+body {
+   margin: 0;
+   background-color: coral;
+   display: flex; /* Use flexbox for centering */
+   justify-content: center; /* Center horizontally */
+   align-items: center; /* Center vertically */
+   height: 100vh; /* Full viewport height */
+}
+
+/* Button styles */
+.button {
+   background-color: beige;
+   color: red;
+   font-family: "Lato", sans-serif;
+   position: relative;
+   border: 2px solid green; /* Add a green border */
+   padding: 10px 20px; /* Add some padding for better appearance */
+   font-size: 16px; /* Adjust font size */
+   cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Lato thin font style */
+.lato-thin {
+   font-family: "Lato", sans-serif;
+   font-weight: 100;
+   font-style: normal;
+}
+/* Game container styles */
+#game_container {
+   background: url("./Assets/background.png") no-repeat center center fixed;
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+   height: 100%; /* Ensure it spans the full height */
+   width: 100%; /* Ensure it spans the full width */
+   border: 1px solid;
+}
