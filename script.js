@@ -43,10 +43,19 @@ function applyGravity() {
 
   bird.style.top = birdTop + "px";
 }
+//session 4
+// Add rotation: tilt up when rising, down when falling
+let angle = Math.min(Math.max(bird_dy * 2, -30 ), 90) // Change between -30 and 90 degrees
+bird.style.transform = `rotate($(angle)deg)`;
 
 // session 2
 function startGame() {
   if (gameInterval !== null) return; // Prevent multiple intervals
+  //session 4
+  hitSound.play();
+
+
+  )
 
   gameInterval = setInterval(() => {
     // session 2
@@ -58,6 +67,9 @@ function startGame() {
     //session 3
     frame++;
 
+ // session 4
+ getDifficultySettings(); //update difficulty before starting
+
     // session 3
     // Every 200 frames (~2 seconds), create new pipe
     if (frame % frame_time === 0) {
@@ -65,6 +77,7 @@ function startGame() {
     }
   }, 10);
 }
+
 
 // session 3
 // Create pipe
@@ -163,7 +176,9 @@ function setScore(newscore) {
 //End game
 function endGame() {
   clearInterval(gameInterval);
-  gameInterval = null;
+    gameInterval = null;
+    backgroundMusic.pause();
+    backgroundMusic.currentTime = 0;
 
   alert("Game Over! Your score: " + score);
   resetGame();
@@ -183,3 +198,21 @@ function resetGame() {
   game_state = "Start";
   score_display.textContent ="";
 }
+// session 4
+let pipeSpeed = 3; // Default speed
+function getDifficultySettings() {
+  const selected = document.getElementById("difficulty-select").value;
+
+  if (selected ==="Easy") {
+    pipeSpeed = 1;
+  
+  } else if (selected === "Medium"){
+   pipeSpeed = 3;
+  } else if (selected === "Hard"){
+    pipeSpeed = 5;
+  }
+}
+// Load background music
+const backgroundMusic = new Audio("Assests/01 World Music 1.mp3");
+backgroundMusic.loop = true; // music should keep playing
+backgroundMusic.volume= 0.5; // adjust volume
