@@ -74,6 +74,12 @@ body {
    left: 40%;
    background: url("asset/bird.png") no-repeat center center;
    background-size: cover;
+
+/* session 4 : New for rotation*/
+transform-origin: center;
+transition: transform 0.1s linear;
+
+
  }
 
 /* session 3 */

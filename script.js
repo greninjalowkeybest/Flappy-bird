@@ -1,28 +1,25 @@
 // Game variables
-// session 1
 let gravity = 0.25;
 let bird_dy = 0;
 let score = 0;
+let highScore = 0; // New variable to track the high score
 let frame = 0;
-// session 2
 let game_state = "Start";
-
-// session 2
 let gameInterval = null;
-
-// session 3
 const frame_time = 150;
-
 let pipes = [];
 let pipe_gap = 250;
+let pipeSpeed = 3; // Default speed
+let difficultySet = false; // Flag to lock difficulty once set
 
-// session 2
+// DOM elements 
 let bird = document.getElementById("bird");
 let score_display = document.getElementById("score");
+let high_score_display = document.getElementById("high-score"); // New element for high score
 let game_container = document.getElementById("game_container");
 let start_btn = document.getElementById("start-btn");
 
-// session 2
+// Event listener for keydown
 document.addEventListener("keydown", (e) => {
   if (e.code === "Space" || e.code === "ArrowUp") {
     if (game_state !== "Play") {
@@ -33,7 +30,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// session 2
+// Apply gravity
 function applyGravity() {
   bird_dy += gravity;
   let birdTop = bird.offsetTop + bird_dy;
@@ -42,35 +39,26 @@ function applyGravity() {
   birdTop = Math.min(birdTop, game_container.offsetHeight - bird.offsetHeight);
 
   bird.style.top = birdTop + "px";
-}
-//session 4
-// Add rotation: tilt up when rising, down when falling
-let angle = Math.min(Math.max(bird_dy * 2, -30 ), 90) // Change between -30 and 90 degrees
-bird.style.transform = `rotate($(angle)deg)`;
 
-// session 2
+// session 4
+// Add rotation: tilt up when rising down, down when falling
+let angle = Math.min(Math.max(bird_dy * 2, -30), 90); //Clamp between -30 and 90 degrees
+bird.style.transform = `rotate(${angle})deg)`; 
+
+}
+
+// Start game
 function startGame() {
   if (gameInterval !== null) return; // Prevent multiple intervals
-  //session 4
-  hitSound.play();
 
-
-  )
+  getDifficultySettings(); // Set difficulty only at the start of the game
 
   gameInterval = setInterval(() => {
-    // session 2
     applyGravity();
-    // session 3
     movePipes();
-    // session 3
     checkCollision();
-    //session 3
     frame++;
 
- // session 4
- getDifficultySettings(); //update difficulty before starting
-
-    // session 3
     // Every 200 frames (~2 seconds), create new pipe
     if (frame % frame_time === 0) {
       createPipe();
@@ -78,8 +66,6 @@ function startGame() {
   }, 10);
 }
 
-
-// session 3
 // Create pipe
 function createPipe() {
   let pipe_position =
@@ -106,11 +92,10 @@ function createPipe() {
   pipes.push(top_pipe, bottom_pipe);
 }
 
-// session 3
 // Move pipes
 function movePipes() {
   for (let pipe of pipes) {
-    pipe.style.left = pipe.offsetLeft - 3 + "px";
+    pipe.style.left = pipe.offsetLeft - pipeSpeed + "px";
 
     // Remove pipes off screen
     if (pipe.offsetLeft < -pipe.offsetWidth) {
@@ -122,15 +107,7 @@ function movePipes() {
   pipes = pipes.filter((pipe) => pipe.offsetLeft + pipe.offsetWidth > 0);
 }
 
-// session 2
-// Start button (optional extra)
-start_btn.addEventListener("click", () => {
-  if (game_state !== "Play") {
-    game_state = "Play";
-    startGame();
-  }
-});
-//Check collision
+// Check collision
 function checkCollision() {
   let birdRect = bird.getBoundingClientRect();
   for (let pipe of pipes) {
@@ -167,24 +144,28 @@ function checkCollision() {
     }
   });
 }
-//session 3
+
+// Set score
 function setScore(newscore) {
   score = newscore;
-  score_display.textContent = "score:" + score;
+  score_display.textContent = "Score: " + score;
+
+  // Update high score if the current score exceeds it
+  if (score > highScore) {
+    highScore = score;
+    high_score_display.textContent = "High Score: " + highScore;
+  }
 }
-//session 3 
-//End game
+
+// End game
 function endGame() {
   clearInterval(gameInterval);
-    gameInterval = null;
-    backgroundMusic.pause();
-    backgroundMusic.currentTime = 0;
+  gameInterval = null;
 
   alert("Game Over! Your score: " + score);
   resetGame();
-
 }
-//session 3
+
 // Reset game
 function resetGame() {
   bird.style.top = "50%";
@@ -192,27 +173,32 @@ function resetGame() {
   for (let pipe of pipes) {
     pipe.remove();
   }
-  pipes =[];
-  setScore(0)
-  frame= 0;
+  pipes = [];
+  setScore(0);
+  frame = 0;
   game_state = "Start";
-  score_display.textContent ="";
+  score_display.textContent = "";
+  difficultySet = false; // Allow difficulty to be changed for the next game
 }
-// session 4
-let pipeSpeed = 3; // Default speed
-function getDifficultySettings() {
-  const selected = document.getElementById("difficulty-select").value;
 
-  if (selected ==="Easy") {
-    pipeSpeed = 1;
-  
-  } else if (selected === "Medium"){
-   pipeSpeed = 3;
-  } else if (selected === "Hard"){
-    pipeSpeed = 5;
+// Get difficulty settings
+function getDifficultySettings() {
+  if (!difficultySet) { // Only set difficulty if it hasn't been set yet
+    const selected = document.getElementById("difficulty-select").value;
+
+    if (selected === "Easy") {
+      pipeSpeed = 3;
+    }  if (selected === "Medium") {
+      pipeSpeed = 5;
+    }  if (selected === "Hard") {
+      pipeSpeed = 7;
+    }
+
+    difficultySet = true;
   }
 }
+
 // Load background music
 const backgroundMusic = new Audio("Assests/01 World Music 1.mp3");
-backgroundMusic.loop = true; // music should keep playing
-backgroundMusic.volume= 0.5; // adjust volume
+backgroundMusic.loop = true; // Music should keep playing
+backgroundMusic.volume = 0.5; // Adjust volume
