@@ -198,11 +198,6 @@ function getDifficultySettings() {
   }
 }
 
-// Load background music
-const backgroundMusic = new Audio("Assests/01 World Music 1.mp3");
-backgroundMusic.loop = true; // Music should keep playing
-backgroundMusic.volume = 0.5; // Adjust volume
-
 
 
 
