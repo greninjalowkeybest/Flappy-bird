@@ -194,7 +194,7 @@ function getDifficultySettings() {
       pipeSpeed = 7;
     }
 
-    difficultySet = true;
+  let  difficultySet = true;
   }
 }
 
@@ -202,3 +202,18 @@ function getDifficultySettings() {
 const backgroundMusic = new Audio("Assests/01 World Music 1.mp3");
 backgroundMusic.loop = true; // Music should keep playing
 backgroundMusic.volume = 0.5; // Adjust volume
+
+
+
+
+
+
+function updateBirdAvatatar(score) {
+  if (score >= 25 && score < 20) {
+    //bird.src = "Assets/Super.png"; -> if you used img in html
+    bird.style.background = "url.(/Assets/Super.png) center center" // use div
+  } else {
+  //bird.src = "Assets/bird.png";
+  bird.style.background = "url(/Assets/bird.png) center center;";
+}
+}
