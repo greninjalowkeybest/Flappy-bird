@@ -50,6 +50,8 @@ bird.style.transform = `rotate(${angle})deg)`;
 // Start game
 function startGame() {
   if (gameInterval !== null) return; // Prevent multiple intervals
+    // session 4
+    backgroundMusic.play();
 
   getDifficultySettings(); // Set difficulty only at the start of the game
 
@@ -161,10 +163,12 @@ function setScore(newscore) {
 function endGame() {
   clearInterval(gameInterval);
   gameInterval = null;
-
-  alert("Game Over! Your score: " + score);
+  backgroundMusic.pause();
+  backgroundMusic.currentTime = 0;
+  alert("Game Over! Your Score: " + score);
   resetGame();
 }
+
 
 // Reset game
 function resetGame() {
@@ -202,3 +206,8 @@ function getDifficultySettings() {
 
 
 
+
+// Load background music
+const backgroundMusic = new Audio("Assets/01 World Music.mp3");
+backgroundMusic.loop = true; // music should keep playing
+backgroundMusic.volume = 0.5; // adjust volume
