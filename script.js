@@ -202,13 +202,3 @@ function getDifficultySettings() {
 
 
 
-
-function updateBirdAvatatar(score) {
-  if (score >= 25 && score < 20) {
-    //bird.src = "Assets/Super.png"; -> if you used img in html
-    bird.style.background = "url.(/Assets/Super.png) center center" // use div
-  } else {
-  //bird.src = "Assets/bird.png";
-  bird.style.background = "url(/Assets/bird.png) center center;";
-}
-}
